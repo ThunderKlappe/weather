@@ -26,7 +26,7 @@ async function weatherSearch(location) {
         let geoCode = await _getGeoCode(location);
 
         let response = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${geoCode.lat}&lon=${geoCode.lon}&APPID=07635fa17157cfd961af367e15eeb273`,
+            `https://api.openweathermap.org/data/2.5/weather?lat=${geoCode.lat}&lon=${geoCode.lon}&APPID=07635fa17157cfd961af367e15eeb273&units=imperial`,
             { mode: "cors" }
         );
         return await response.json();
