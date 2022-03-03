@@ -10,7 +10,7 @@ module.exports = {
     devtool: "inline-source-map",
     plugins: [
         new HtmlWebpackPlugin({
-            title: "Basic Sign-up Form",
+            title: "Weather App",
             template: "src/index.html",
         }),
     ],
@@ -32,7 +32,7 @@ module.exports = {
                     loader: "babel-loader",
                     options: {
                         presets: [["@babel/preset-env", { targets: "defaults" }]],
-                        plugins: ["@babel/plugin-proposal-class-properties"],
+                        plugins: ["@babel/plugin-proposal-class-properties", "@babel/plugin-transform-runtime"],
                     },
                 },
             },
