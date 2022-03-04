@@ -1,20 +1,27 @@
 async function _getGeoCode(location) {
+    let response;
+    let place;
     try {
-        let response;
         if (/^[0-9]{5}$/.test(location)) {
-            response = await fetch(
-                `http://api.openweathermap.org/geo/1.0/zip?zip=${location},US&appid=07635fa17157cfd961af367e15eeb273`
-            );
-            let place = await response.json();
-            console.log(place);
-            return place;
+            try {
+                response = await fetch(
+                    `http://api.openweathermap.org/geo/1.0/zip?zip=${location},US&appid=07635fa17157cfd961af367e15eeb273`
+                );
+                place = await response.json();
+                return place;
+            } catch (err) {
+                console.log(err);
+            }
         } else {
-            response = await fetch(
-                `http://api.openweathermap.org/geo/1.0/direct?q=${location},US&limit=1&appid=07635fa17157cfd961af367e15eeb273`
-            );
-            let place = await response.json();
-            console.log(place);
-            return place[0];
+            try {
+                response = await fetch(
+                    `http://api.openweathermap.org/geo/1.0/direct?q=${location},US&limit=1&appid=07635fa17157cfd961af367e15eeb273`
+                );
+                place = await response.json();
+                return place[0];
+            } catch (err) {
+                console.log(err);
+            }
         }
     } catch (err) {
         console.log(err);
@@ -31,7 +38,7 @@ async function weatherSearch(location) {
         );
         return await response.json();
     } catch (err) {
-        return err;
+        return false;
     }
 }
 

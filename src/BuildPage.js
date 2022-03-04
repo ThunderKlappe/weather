@@ -5,6 +5,7 @@ export const BuildPage = (() => {
     const buildStartingPage = () => {
         const header = DOMManip.makeNewElement("div", "header", "", "Weather");
         const content = DOMManip.makeNewElement("div", "content");
+        const homeContainer = DOMManip.makeNewElement("div", "home-container", "starting");
 
         const webLogo = new Image();
         webLogo.src = logo;
@@ -23,9 +24,28 @@ export const BuildPage = (() => {
         const searchButton = DOMManip.makeNewElement("button", "search-button", "", "Search");
         DOMManip.appendChildren(searchForm, searchInput, searchButton);
 
-        DOMManip.appendChildren(content, webLogo, searchForm);
+        DOMManip.appendChildren(homeContainer, webLogo, searchForm);
+        content.appendChild(homeContainer);
         DOMManip.appendChildren(document.body, header, content);
     };
 
-    return { buildStartingPage };
+    const makeLoading = () => {
+        const loadingContainer = DOMManip.makeNewElement("div", "loading-container");
+        const loadingIcon = DOMManip.makeNewElement("i", "loading-icon", "fa-solid fa-sun");
+        loadingContainer.appendChild(loadingIcon);
+        document.body.appendChild(loadingContainer);
+    };
+    const removeLoading = () => {
+        DOMManip.getElement("#loading-container").remove();
+    };
+    const _minimizeSearch = () => {
+        const homeContainer = DOMManip.getElement("#home-container");
+        homeContainer.classList.add("minimized");
+    };
+    const displayWeather = weatherInfo => {
+        _minimizeSearch();
+        console.log(weatherInfo);
+    };
+
+    return { buildStartingPage, makeLoading, removeLoading, displayWeather };
 })();
