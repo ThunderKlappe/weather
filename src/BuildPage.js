@@ -27,6 +27,8 @@ export const BuildPage = (() => {
 
         DOMManip.appendChildren(homeContainer, webLogo, searchForm);
         content.appendChild(homeContainer);
+        //DOMManip.appendChildren(content, webLogo, searchForm);
+
         DOMManip.appendChildren(document.body, header, content);
     };
 
@@ -53,9 +55,10 @@ export const BuildPage = (() => {
     const _buildWeatherPage = () => {
         const content = DOMManip.getElement("#content");
         _clearContent();
-        const weatherContainer = DOMManip.makeNewElement("div", "weather-container");
+        const weatherContainer = DOMManip.makeNewElement("div", "weather-container", "starting");
         const cityName = DOMManip.makeNewElement("div", "city-name");
         const weatherDisplay = DOMManip.makeNewElement("div", "weather-display");
+        const weatherDescriptionContainer = DOMManip.makeNewElement("div", "weather-description-container");
         const weatherIconContainer = DOMManip.makeNewElement("div", "weather-icon-container");
         const weatherIcon = DOMManip.makeNewElement("img", "weather-icon");
         const weatherDescription = DOMManip.makeNewElement("div", "weather-description");
@@ -64,10 +67,10 @@ export const BuildPage = (() => {
         const cloudCover = DOMManip.makeNewElement("div", "cloud-cover", "weather-info");
         const humidity = DOMManip.makeNewElement("div", "humidity", "weather-info");
         weatherIconContainer.appendChild(weatherIcon);
+        DOMManip.appendChildren(weatherDescriptionContainer, weatherIconContainer, weatherDescription);
         DOMManip.appendChildren(
             weatherDisplay,
-            weatherIconContainer,
-            weatherDescription,
+            weatherDescriptionContainer,
             currentTemp,
             feelsLike,
             cloudCover,
