@@ -29,7 +29,6 @@ export const weatherFunctions = (() => {
         if (_checkValidity()) {
             try {
                 const searchTerm = DOMManip.getElement("#search-input").value;
-                console.log(searchTerm);
                 BuildPage.makeLoading();
                 const searchResults = await weatherSearch(searchTerm);
                 await BuildPage.removeLoading();

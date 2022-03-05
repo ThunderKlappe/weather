@@ -90,11 +90,28 @@ export const BuildPage = (() => {
             }
         }
     };
+    const _isDayTime = timeInfo => {
+        const currentTime = new Date().getTime();
+        if (currentTime < timeInfo.susrise || currentTime > timeInfo.sunset) {
+            return true;
+        }
+        return false;
+    };
+    const _formatIconContainer = weatherInfo => {
+        const iconContainer = DOMManip.getElement("#weather-icon-container");
+        let backgroundColor;
+        _isDayTime({ sunrise: weatherInfo.sys.sunrise, sunset: weatherInfo.sys.sunset })
+            ? (backgroundColor = "#007EFF")
+            : (backgroundColor = "#00101E");
+        const cloudCover = weatherInfo.clouds.all;
+        iconContainer.style.backgroundColor = backgroundColor;
+        iconContainer.firstElementChild.style.backdropFilter = `grayscale(${cloudCover}%)`;
+    };
     const _fillInWeatherData = weatherInfo => {
-        console.log(weatherInfo.weather[0]);
         DOMManip.getElement(
             "#weather-icon"
         ).src = `http://openweathermap.org/img/wn/${weatherInfo.weather[0].icon}@4x.png`;
+        _formatIconContainer(weatherInfo);
         DOMManip.getElement("#weather-description").textContent =
             weatherInfo.weather[0].description.toUpperCase();
         DOMManip.getElement("#current-temp").innerHTML = `Current Temperature: ${weatherInfo.main.temp}&deg;`;
