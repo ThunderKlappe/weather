@@ -19,15 +19,14 @@ export const BuildPage = (() => {
             "",
             "",
             { type: "text" },
-            { required: null },
             { placeholder: "Enter a US city or zip code" }
         );
+        searchInput.setAttribute("required", "");
         const searchButton = DOMManip.makeNewElement("button", "search-button", "", "Search");
         DOMManip.appendChildren(searchForm, searchInput, searchButton);
 
         DOMManip.appendChildren(homeContainer, webLogo, searchForm);
         content.appendChild(homeContainer);
-        //DOMManip.appendChildren(content, webLogo, searchForm);
 
         DOMManip.appendChildren(document.body, header, content);
     };
@@ -41,9 +40,12 @@ export const BuildPage = (() => {
     const removeLoading = () => {
         DOMManip.getElement("#loading-container").remove();
     };
+    const _clearSearchBar = () => {
+        DOMManip.getElement("#search-input").value = "";
+    };
     const _minimizeSearch = () => {
-        const homeContainer = DOMManip.getElement("#home-container");
-        homeContainer.classList.add("minimized");
+        DOMManip.getElement("#home-container").classList.add("minimized");
+        _clearSearchBar();
     };
 
     const _clearContent = () => {
@@ -106,8 +108,6 @@ export const BuildPage = (() => {
         _minimizeSearch();
         _buildWeatherPage();
         _fillInWeatherData(weatherInfo);
-
-        console.log(weatherInfo);
     };
 
     return { buildStartingPage, makeLoading, removeLoading, displayWeather };
