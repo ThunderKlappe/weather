@@ -21,7 +21,7 @@ export const weatherFunctions = (() => {
         let searchInput = DOMManip.getElement("#search-input");
         searchInput.setCustomValidity("");
         if (searchInput.value == "") {
-            searchInput.setCustomValidity("Please enter your a US City or Zip Code");
+            searchInput.setCustomValidity("Please enter a US City or Zip Code");
             searchInput.reportValidity();
             _markInvalid(searchInput);
             return false;

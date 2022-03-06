@@ -102,9 +102,10 @@ button:active {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
+    position: fixed;
     top: 40%;
     left: 50%;
+    margin: -62.5px;
     background-color: #85f4ff;
     height: 125px;
     width: 125px;
