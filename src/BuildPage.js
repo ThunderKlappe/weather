@@ -1,6 +1,7 @@
 import { DOMManip } from "./DOMManip";
 import logo from "./assets/logo.png";
 import cityData from "./city.json";
+import { EventHandler } from "./EventHandler";
 
 export const BuildPage = (() => {
     const buildStartingPage = () => {
@@ -64,19 +65,37 @@ export const BuildPage = (() => {
         const weatherIconContainer = DOMManip.makeNewElement("div", "weather-icon-container");
         const weatherIcon = DOMManip.makeNewElement("img", "weather-icon");
         const weatherDescription = DOMManip.makeNewElement("div", "weather-description");
-        const currentTemp = DOMManip.makeNewElement("div", "current-temp", "weather-info");
-        const feelsLike = DOMManip.makeNewElement("div", "feels-like", "weather-info");
+        const currentTempLabel = DOMManip.makeNewElement(
+            "div",
+            "current-temp-label",
+            "weather-info",
+            "Current Temp: "
+        );
+        const currentTempDisplay = DOMManip.makeNewElement("span", "current-temp", "weather-info");
+        const feelsLikeLabel = DOMManip.makeNewElement(
+            "div",
+            "feels-like-label",
+            "weather-info",
+            "Feels Like: "
+        );
+        const feelsLikeDisplay = DOMManip.makeNewElement("span", "feels-like", "weather-info");
         const cloudCover = DOMManip.makeNewElement("div", "cloud-cover", "weather-info");
         const humidity = DOMManip.makeNewElement("div", "humidity", "weather-info");
+        const tempScaleContainer = DOMManip.makeNewElement("div", "temp-scale-container");
+        const tempScaleToggle = DOMManip.makeNewElement("button", "temp-scale-toggle", "farenheit");
         weatherIconContainer.appendChild(weatherIcon);
+        currentTempLabel.appendChild(currentTempDisplay);
+        feelsLikeLabel.appendChild(feelsLikeDisplay);
+        tempScaleContainer.appendChild(tempScaleToggle);
         DOMManip.appendChildren(weatherDescriptionContainer, weatherIconContainer, weatherDescription);
         DOMManip.appendChildren(
             weatherDisplay,
             weatherDescriptionContainer,
-            currentTemp,
-            feelsLike,
+            currentTempLabel,
+            feelsLikeLabel,
             cloudCover,
-            humidity
+            humidity,
+            tempScaleContainer
         );
         DOMManip.appendChildren(weatherContainer, cityName, weatherDisplay);
         content.appendChild(weatherContainer);
@@ -90,8 +109,8 @@ export const BuildPage = (() => {
             }
         }
     };
-    const _isDayTime = timeInfo => {
-        const currentTime = new Date().getTime();
+    const _isNightTime = timeInfo => {
+        const currentTime = Math.floor(new Date().getTime() / 1000);
         if (currentTime < timeInfo.susrise || currentTime > timeInfo.sunset) {
             return true;
         }
@@ -100,9 +119,9 @@ export const BuildPage = (() => {
     const _formatIconContainer = weatherInfo => {
         const iconContainer = DOMManip.getElement("#weather-icon-container");
         let backgroundColor;
-        _isDayTime({ sunrise: weatherInfo.sys.sunrise, sunset: weatherInfo.sys.sunset })
-            ? (backgroundColor = "#007EFF")
-            : (backgroundColor = "#00101E");
+        _isNightTime({ sunrise: weatherInfo.sys.sunrise, sunset: weatherInfo.sys.sunset })
+            ? (backgroundColor = "#00101E")
+            : (backgroundColor = "#007EFF");
         const cloudCover = weatherInfo.clouds.all;
         iconContainer.style.backgroundColor = backgroundColor;
         iconContainer.firstElementChild.style.backdropFilter = `grayscale(${cloudCover}%)`;
@@ -114,8 +133,10 @@ export const BuildPage = (() => {
         _formatIconContainer(weatherInfo);
         DOMManip.getElement("#weather-description").textContent =
             weatherInfo.weather[0].description.toUpperCase();
-        DOMManip.getElement("#current-temp").innerHTML = `Current Temperature: ${weatherInfo.main.temp}&deg;`;
-        DOMManip.getElement("#feels-like").innerHTML = `Feels Like: ${weatherInfo.main.feels_like}&deg;`;
+        DOMManip.getElement("#current-temp").innerHTML = `${weatherInfo.main.temp}&deg;`;
+        DOMManip.getElement("#current-temp").setAttribute("data-temp", weatherInfo.main.temp);
+        DOMManip.getElement("#feels-like").innerHTML = `${weatherInfo.main.feels_like}&deg;`;
+        DOMManip.getElement("#feels-like").setAttribute("data-temp", weatherInfo.main.feels_like);
         DOMManip.getElement("#cloud-cover").textContent = `Cloud Cover: ${weatherInfo.clouds.all}%`;
         DOMManip.getElement("#humidity").textContent = `Humidity: ${weatherInfo.main.humidity}%`;
         const cityInfo = _getCity(weatherInfo);
@@ -125,7 +146,22 @@ export const BuildPage = (() => {
         _minimizeSearch();
         _buildWeatherPage();
         _fillInWeatherData(weatherInfo);
+        EventHandler.activateTempToggle();
+    };
+    const _toggleTempButton = () => {
+        const tempScaleToggle = DOMManip.getElement("#temp-scale-toggle");
+        tempScaleToggle.classList.toggle("farenheit");
+        tempScaleToggle.classList.toggle("celsius");
+    };
+    const toggleTemp = newTempInfo => {
+        const currentTemp = DOMManip.getElement("#current-temp");
+        currentTemp.innerHTML = `${newTempInfo.currentTemp}&deg;`;
+        currentTemp.setAttribute("data-temp", newTempInfo.currentTemp);
+        const feelsLike = DOMManip.getElement("#feels-like");
+        feelsLike.innerHTML = `${newTempInfo.feelsLike}&deg;`;
+        feelsLike.setAttribute("data-temp", newTempInfo.feelsLike);
+        _toggleTempButton();
     };
 
-    return { buildStartingPage, makeLoading, removeLoading, displayWeather };
+    return { buildStartingPage, makeLoading, removeLoading, displayWeather, toggleTemp };
 })();
