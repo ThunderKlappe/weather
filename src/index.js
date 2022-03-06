@@ -23,6 +23,12 @@ export const weatherFunctions = (() => {
         _removeInvalid(searchInput);
         return true;
     };
+    const _cantFind = () => {
+        let searchInput = DOMManip.getElement("#search-input");
+        searchInput.setCustomValidity("We can't find that location");
+        searchInput.reportValidity();
+        _markInvalid(searchInput);
+    };
 
     async function search(e) {
         e.preventDefault();
@@ -35,7 +41,7 @@ export const weatherFunctions = (() => {
                 if (searchResults) {
                     BuildPage.displayWeather(searchResults);
                 } else {
-                    console.log("Couldn't find it");
+                    _cantFind();
                 }
             } catch (err) {
                 console.log(err);
