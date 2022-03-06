@@ -8,6 +8,10 @@ export const EventHandler = (() => {
     const activateTempToggle = () => {
         DOMManip.getElement("#temp-scale-toggle").addEventListener("click", weatherFunctions.convertTemp);
     };
+    const activateSearchErrorRemove = () => {
+        DOMManip.getElement("#search-input").removeEventListener("input", weatherFunctions.removeError);
+        DOMManip.getElement("#search-input").addEventListener("input", weatherFunctions.removeError);
+    };
 
-    return { activateSearch, activateTempToggle };
+    return { activateSearch, activateTempToggle, activateSearchErrorRemove };
 })();

@@ -7,9 +7,15 @@ import { DOMManip } from "./DOMManip";
 export const weatherFunctions = (() => {
     const _markInvalid = elem => {
         elem.classList.add("invalid");
+        EventHandler.activateSearchErrorRemove();
     };
     const _removeInvalid = elem => {
         elem.classList.remove("invalid");
+    };
+    const removeError = () => {
+        const searchInput = DOMManip.getElement("#search-input");
+        searchInput.setCustomValidity("");
+        _removeInvalid(searchInput);
     };
     const _checkValidity = () => {
         let searchInput = DOMManip.getElement("#search-input");
@@ -66,7 +72,7 @@ export const weatherFunctions = (() => {
         }
     };
 
-    return { search, convertTemp };
+    return { search, convertTemp, removeError };
 })();
 
 const initPage = (() => {
