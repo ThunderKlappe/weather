@@ -58,7 +58,7 @@ export const BuildPage = (() => {
     const _buildWeatherPage = () => {
         const content = DOMManip.getElement("#content");
         _clearContent();
-        const weatherContainer = DOMManip.makeNewElement("div", "weather-container", "starting");
+        const weatherContainer = DOMManip.makeNewElement("div", "weather-container");
         const cityName = DOMManip.makeNewElement("div", "city-name");
         const weatherDisplay = DOMManip.makeNewElement("div", "weather-display");
         const weatherDescriptionContainer = DOMManip.makeNewElement("div", "weather-description-container");
@@ -142,11 +142,18 @@ export const BuildPage = (() => {
         const cityInfo = _getCity(weatherInfo);
         DOMManip.getElement("#city-name").textContent = `${cityInfo.name}, ${cityInfo.state}`;
     };
+    const _toggleWeatherContainer = () => {
+        setTimeout(() => {
+            const weatherContainer = DOMManip.getElement("#weather-container");
+            weatherContainer.classList.toggle("displayed");
+        }, 100);
+    };
     const displayWeather = weatherInfo => {
         _minimizeSearch();
         _buildWeatherPage();
         _fillInWeatherData(weatherInfo);
         EventHandler.activateTempToggle();
+        _toggleWeatherContainer();
     };
     const _toggleTempButton = () => {
         const tempScaleToggle = DOMManip.getElement("#temp-scale-toggle");

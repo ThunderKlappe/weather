@@ -125,8 +125,14 @@ button:active {
     background-color: inherit;
     min-height: inherit;
     width: 75%;
-    position: fixed;
-    transition: 0.3s ease-out;
+    position: relative;
+    transition: 0.5s cubic-bezier(0.33, 0.04, 0.48, 1.38);
+    top: -500px;
+    left: -100%;
+}
+#weather-container.displayed {
+    top: 0;
+    left: 0;
 }
 
 #city-name {
