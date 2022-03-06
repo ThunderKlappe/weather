@@ -18,7 +18,8 @@ async function _getGeoCode(location) {
         if (/^[0-9]{5}$/.test(location)) {
             try {
                 response = await fetch(
-                    `http://api.openweathermap.org/geo/1.0/zip?zip=${location},US&appid=07635fa17157cfd961af367e15eeb273`
+                    `https://api.openweathermap.org/geo/1.0/zip?zip=${location},US&appid=07635fa17157cfd961af367e15eeb273`,
+                    { mode: "cors" }
                 );
                 if (response.status >= 400 && response.status < 600) {
                     throw new Error("Bad response from server");
@@ -31,7 +32,8 @@ async function _getGeoCode(location) {
         } else {
             try {
                 response = await fetch(
-                    `http://api.openweathermap.org/geo/1.0/direct?q=${location},US&limit=1&appid=07635fa17157cfd961af367e15eeb273`
+                    `https://api.openweathermap.org/geo/1.0/direct?q=${location},US&limit=1&appid=07635fa17157cfd961af367e15eeb273`,
+                    { mode: "cors" }
                 );
                 place = await response.json();
                 return place[0];
